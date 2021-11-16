@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="658.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="baseline.FXMLController">
+    <children>
+        <GridPane layoutX="-2.0" prefHeight="400.0" prefWidth="641.0" vgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="163.60003662109375" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="55.2" minHeight="10.0" prefHeight="39.99998779296875" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="184.99998168945314" minHeight="10.0" prefHeight="33.2" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="309.40002212524416" minHeight="6.200005912780767" prefHeight="235.40003662109376" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="309.40002212524416" minHeight="8.199975585937523" prefHeight="8.999963378906273" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="309.40002212524416" minHeight="10.0" prefHeight="29.4000244140625" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="72.19999999999999" minHeight="10.0" prefHeight="37.80000000000001" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+               <children>
+                  <Label text="Search term:">
+                     <HBox.margin>
+                        <Insets left="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="searchTermField" />
+                  <Button fx:id="searchSerialNumberButton" mnemonicParsing="false" text="Search SN" />
+                  <Button fx:id="searchNameButton" mnemonicParsing="false" text="Search Name" />
+                  <Button fx:id="clearSearchButton" mnemonicParsing="false" text="Clear Search" />
+               </children>
+            </HBox>
+                <HBox prefHeight="21.0" prefWidth="656.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="clearListButton" mnemonicParsing="false" onAction="#clearListAndBoxes" prefHeight="26.0" prefWidth="64.0" text="Clear List">
+                     <HBox.margin>
+                        <Insets left="5.0" top="5.0" />
+                     </HBox.margin></Button>
+                  <Label text="Sort by:">
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ChoiceBox fx:id="sortByChoiceBox" prefHeight="26.0" prefWidth="122.0">
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+                    </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+                </HBox>
+                <HBox prefHeight="112.0" prefWidth="642.0" spacing="10.0" GridPane.rowIndex="5">
+                    <children>
+                        <Button fx:id="exportButton" mnemonicParsing="false" onAction="#exportList" text="Export" />
+                        <Button fx:id="importButton" mnemonicParsing="false" onAction="#importList" text="Import" />
+                    </children>
+                    <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                    </padding>
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                </HBox>
+                <ScrollPane prefHeight="260.0" prefWidth="642.0" GridPane.rowIndex="2">
+                    <content>
+                        <VBox fx:id="itemsListBox" prefHeight="239.0" prefWidth="640.0" spacing="5.0">
+                            <padding>
+                                <Insets left="5.0" />
+                            </padding>
+                     <children>
+                        <HBox prefHeight="31.0" prefWidth="635.0" spacing="8.0">
+                           <children>
+                              <Label text="Name:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="120.0" text="Horse" />
+                              <Label text="SN:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="121.0" text="H-123-456-789" />
+                              <Label text="Value:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="121.0" text="1000.00" />
+                              <Button mnemonicParsing="false" text="Update item" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="15.0" layoutY="10.0" prefHeight="31.0" prefWidth="635.0" spacing="8.0">
+                           <children>
+                              <Label text="Name:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="120.0" text="Battery" />
+                              <Label text="SN:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="121.0" text="B-000-000-001" />
+                              <Label text="Value:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="121.0" text="2.10" />
+                              <Button mnemonicParsing="false" text="Update item" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="15.0" layoutY="46.0" prefHeight="31.0" prefWidth="635.0" spacing="8.0">
+                           <children>
+                              <Label text="Name:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="120.0" text="Coffin" />
+                              <Label text="SN:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="121.0" text="C-008-675-309" />
+                              <Label text="Value:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="121.0" text="350.99" />
+                              <Button mnemonicParsing="false" text="Update item" />
+                           </children>
+                        </HBox>
+                        <HBox layoutX="15.0" layoutY="82.0" prefHeight="31.0" prefWidth="635.0" spacing="8.0">
+                           <children>
+                              <Label text="Name:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="120.0" text="Jet-ski" />
+                              <Label text="SN:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="121.0" text="J-999-999-999" />
+                              <Label text="Value:">
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="121.0" text="20000.00" />
+                              <Button mnemonicParsing="false" text="Update item" />
+                           </children>
+                        </HBox>
+                     </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+            <HBox prefHeight="36.0" prefWidth="658.0" spacing="8.0" GridPane.rowIndex="4">
+               <children>
+                  <Label text="Name:">
+                     <padding>
+                        <Insets left="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField prefHeight="26.0" prefWidth="120.0" />
+                  <Label text="Serial number:">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField prefHeight="26.0" prefWidth="120.0" />
+                  <Label text="Value:">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField prefHeight="26.0" prefWidth="120.0" />
+                  <Button mnemonicParsing="false" text="Add Item" />
+               </children>
+            </HBox>
+            </children>
+        </GridPane>
+    </children>
+</AnchorPane>
