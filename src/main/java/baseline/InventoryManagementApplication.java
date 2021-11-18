@@ -6,12 +6,15 @@
 
 package baseline;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +24,7 @@ import java.util.*;
 
 class FileReader {
 
-    public Inventory readInventoryFromFile(String filePath){
+    public Inventory readInventoryFromFile(String filePath) throws IOException {
         //Taking a path string as an argument, attempts to open a file.
 
         Path importPath = Paths.get(filePath);
@@ -98,14 +101,19 @@ class FileReader {
         return null;
     }
 
-    private Inventory parseJSONFile(Path importFile){
-        //Make a GsonBuilder
+    private Inventory parseJSONFile(Path importFile) throws IOException {
         //Make a Gson
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         //Make a BufferedReader
-        //Make an Inventory from Gson.fromJson(BufferedReader, Inventory.class)
-        //Return the Inventory
+        BufferedReader bufferedReader = new BufferedReader(
+                new java.io.FileReader("data/test.json"));
 
-        return null;
+        //Make an Inventory from Gson.fromJson(BufferedReader, Inventory.class)
+        Inventory importInv = gson.fromJson(bufferedReader, Inventory.class);
+        bufferedReader.close();
+
+        //Return the Inventory
+        return importInv;
     }
 }
 

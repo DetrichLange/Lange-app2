@@ -1,0 +1,14 @@
+{
+  "items": [
+    {
+      "itemSerialNumber": "A-XB1-24A-XY3",
+      "itemName": "Xbox Series X",
+      "itemValue": "1499.00"
+    },
+    {
+      "itemSerialNumber": "A-QB3-24Z-333",
+      "itemName": "A literal horse",
+      "itemValue": "3000.00"
+    }
+  ]
+}
