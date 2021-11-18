@@ -1,19 +1,10 @@
 package baseline;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Formatter;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +15,7 @@ class AppTest {
     public void readTSVFile_test() throws IOException {
         //This test attempts to read the TSV file in the data folder and convert it to an Inventory object.
 
-        FileReader testReader = new FileReader();
+        MyFileReader testReader = new MyFileReader();
         Inventory testInv;
 
         testInv = testReader.readInventoryFromFile("data/test.txt");
@@ -40,7 +31,7 @@ class AppTest {
     public void readJSONFile_test() throws IOException {
         //This test attempts to read the JSON file in the data folder and convert it to an Inventory object.
 
-        FileReader testReader = new FileReader();
+        MyFileReader testReader = new MyFileReader();
         Inventory testInv = testReader.readInventoryFromFile("data/test.json");
 
         assertEquals("Xbox Series X", testInv.getEntry(0).getItemName());
@@ -50,31 +41,81 @@ class AppTest {
     @Test
     public void readHTMLFile_test() throws IOException {
         //This test attempts to read the HTML file in the data folder and convert it to an inventory object.
-        FileReader testReader = new FileReader();
+        MyFileReader testReader = new MyFileReader();
         Inventory testInv = testReader.readInventoryFromFile("data/test.html");
 
         assertEquals("Xbox Series X", testInv.getEntry(0).getItemName());
         assertEquals("A-QB3-24Z-333", testInv.getEntry(1).getItemSerialNumber());
     }
 
-//    @Test
-//    public void writeJSONFile_test(){
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//
-//        Inventory testInv = new Inventory();
-//        InventoryItem testItem = new InventoryItem("A-XB1-24A-XY3", "Xbox Series X", "1499.00");
-//        InventoryItem testItem2 = new InventoryItem("A-QB3-24Z-333", "A literal horse", "3000.00");
-//        testInv.addEntry(testItem);
-//        testInv.addEntry(testItem2);
-//
-//        JsonElement je = JsonParser.parseString(gson.toJson(testInv));
-//        String prettyJsonString = gson.toJson(je);
-//
-//        try(Formatter output = new Formatter("data/test.json")) {
-//            output.format(prettyJsonString);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @Test
+    public void writeTSVFile_test() throws IOException {
+        //This test attempts to turn an Inventory object into a TSV file in the data folder.
+
+        MyFileWriter testWriter = new MyFileWriter();
+        Inventory testInv = new Inventory();
+        testInv.addEntry(new InventoryItem("A-XB1-24A-XY3", "Xbox Series X", "1499.00"));
+        testInv.addEntry(new InventoryItem("A-QB3-24Z-333", "A literal horse", "3000.00"));
+
+        testWriter.writeTSVFile(Paths.get("data/test2.txt"), testInv);
+
+        //Compare the produced file to a set of correct values and confirm that they are identical.
+        Scanner testScanner = new Scanner(Paths.get("data/test2.txt"));
+        testScanner.useDelimiter("\\t|\r\n");
+        assertEquals("A-XB1-24A-XY3", testScanner.next());
+        assertEquals("Xbox Series X", testScanner.next());
+        assertEquals("1499.00", testScanner.next());
+        assertEquals("A-QB3-24Z-333", testScanner.next());
+        assertEquals("A literal horse", testScanner.next());
+        assertEquals("3000.00", testScanner.next());
+
+        testScanner.close();
+    }
+
+    @Test
+    public void writeHTMLFile_test() throws IOException {
+        //This test attempts to turn an Inventory object into a HTML file in the data folder.
+
+        MyFileWriter testWriter = new MyFileWriter();
+        Inventory testInv = new Inventory();
+        testInv.addEntry(new InventoryItem("A-XB1-24A-XY3", "Xbox Series X", "1499.00"));
+        testInv.addEntry(new InventoryItem("A-QB3-24Z-333", "A literal horse", "3000.00"));
+
+        testWriter.writeHTMLFile(Paths.get("data/test2.html"), testInv);
+
+        //Compare the produced file to a correct file and confirm that they are identical.
+        Scanner testScanner = new Scanner(Paths.get("data/test.html"));
+        Scanner testScanner2 = new Scanner(Paths.get("data/test2.html"));
+
+        while(testScanner.hasNext()) {
+            assertEquals(testScanner.nextLine(), testScanner2.nextLine());
+        }
+
+        testScanner.close();
+        testScanner2.close();
+    }
+
+    @Test
+    public void writeJSONFile_test() throws IOException {
+        //This test attempts to turn an Inventory object into a json file in the data folder.
+
+        MyFileWriter testWriter = new MyFileWriter();
+        Inventory testInv = new Inventory();
+        testInv.addEntry(new InventoryItem("A-XB1-24A-XY3", "Xbox Series X", "1499.00"));
+        testInv.addEntry(new InventoryItem("A-QB3-24Z-333", "A literal horse", "3000.00"));
+
+        testWriter.writeJSONFile(Paths.get("data/test2.json"), testInv);
+
+        //Compare the produced file to a correct file and confirm that they are identical.
+        Scanner testScanner = new Scanner(Paths.get("data/test.json"));
+        Scanner testScanner2 = new Scanner(Paths.get("data/test2.json"));
+
+        while(testScanner.hasNext()) {
+            assertEquals(testScanner.nextLine(), testScanner2.nextLine());
+        }
+
+        testScanner.close();
+        testScanner2.close();
+    }
 
 }
