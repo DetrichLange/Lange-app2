@@ -25,9 +25,7 @@ class AppTest {
         //This test attempts to read the TSV file in the data folder and convert it to an Inventory object.
 
         FileReader testReader = new FileReader();
-        Inventory testInv = new Inventory();
-        File testFile = new File("data/test.txt");
-        Path importPath = Paths.get("data/test.txt");
+        Inventory testInv;
 
         testInv = testReader.readInventoryFromFile("data/test.txt");
         assertEquals("1499.00", testInv.getEntry(0).getItemValue());
@@ -41,12 +39,22 @@ class AppTest {
     @Test
     public void readJSONFile_test() throws IOException {
         //This test attempts to read the JSON file in the data folder and convert it to an Inventory object.
-        
+
         FileReader testReader = new FileReader();
         Inventory testInv = testReader.readInventoryFromFile("data/test.json");
 
         assertEquals("Xbox Series X", testInv.getEntry(0).getItemName());
         assertEquals("3000.00", testInv.getEntry(1).getItemValue());
+    }
+
+    @Test
+    public void readHTMLFile_test() throws IOException {
+        //This test attempts to read the HTML file in the data folder and convert it to an inventory object.
+        FileReader testReader = new FileReader();
+        Inventory testInv = testReader.readInventoryFromFile("data/test.html");
+
+        assertEquals("Xbox Series X", testInv.getEntry(0).getItemName());
+        assertEquals("A-QB3-24Z-333", testInv.getEntry(1).getItemSerialNumber());
     }
 
 //    @Test

@@ -39,7 +39,6 @@ class FileReader {
             }
             //Else if the file path ends in .txt, call parseTSVFile
             else if(filePath.endsWith(".txt")){
-                System.out.println("Found text file");
                 return parseTSVFile(importPath);
             }
             else{
@@ -86,8 +85,47 @@ class FileReader {
         return importInv;
     }
 
-    private Inventory parseHTMLFile(Path importFile){
+    private Inventory parseHTMLFile(Path importFile) throws IOException {
         //Make a new Inventory
+        Inventory importInv = new Inventory();
+
+        String nextSerial;
+        String nextName;
+        String nextValue;
+
+        try(Scanner fileInput = new Scanner(importFile)){
+
+            while(true) {
+                String currentLine = fileInput.nextLine();
+
+                if (currentLine.equals("    <th>Value</th>")) {
+
+                    while (true) {
+                        fileInput.nextLine();
+
+                        currentLine = fileInput.nextLine();
+                        if (currentLine.equals("</table> ")) {
+                            break;
+                        }
+
+                        currentLine = fileInput.nextLine();
+                        nextSerial = currentLine.replace("<td>", "").replace("</td>", "")
+                                .replaceAll("^\s*", "");
+                        currentLine = fileInput.nextLine();
+                        nextName = currentLine.replace("<td>", "").replace("</td>", "")
+                                .replaceAll("^\s*", "");
+                        currentLine = fileInput.nextLine();
+                        nextValue = currentLine.replace("<td>", "").replace("</td>", "")
+                                .replaceAll("^\s*", "");
+
+                        importInv.addEntry(new InventoryItem(nextSerial, nextName, nextValue));
+                    }
+                    break;
+                }
+            }
+
+        }
+
         //Read lines from the importFile until you get the line "<th>Value</th>"
         //Skip one line
         //If the next line is not "</table>":
@@ -98,7 +136,7 @@ class FileReader {
             //Skip one line, repeat loop
         //Else, return the inventory
 
-        return null;
+        return importInv;
     }
 
     private Inventory parseJSONFile(Path importFile) throws IOException {
