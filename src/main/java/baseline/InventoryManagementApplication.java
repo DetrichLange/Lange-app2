@@ -50,13 +50,20 @@ class Inventory {
         items.clear();
     }
 
-    public boolean checkItemValue(double value){
+    public boolean checkItemValue(String value){
         //If the value double is >= 0:
             //Return true
         //Else:
             //Return false
+        double valueDouble;
 
-        return false;
+        try {
+            valueDouble = Double.parseDouble(value);
+        }catch(NumberFormatException nfe){
+            return false;
+        }
+
+        return valueDouble >= 0;
     }
 
     public boolean checkItemName(String name){
@@ -65,7 +72,7 @@ class Inventory {
         //Else:
             //Return false
 
-        return false;
+        return name.length() >= 2 && name.length() <= 256;
     }
 
     public boolean checkItemSerial(String serialNumber){
@@ -75,7 +82,12 @@ class Inventory {
                 //Return true
         //Return false
 
-        return false;
+        for(InventoryItem item : items){
+            if(item.getItemSerialNumber().equals(serialNumber)){
+                return false;
+            }
+        }
+        return true;
     }
 }
 
@@ -95,14 +107,17 @@ class InventoryItem {
 
     public void setItemSerialNumber(String serialNumber){
         //Sets the new serial number for this item.
+        this.itemSerialNumber = serialNumber;
     }
 
     public void setItemName(String name){
         //Sets the new name for the item
+        this.itemName = name;
     }
 
     public void setItemValue(String value){
         //Sets the new value for the item
+        this.itemValue = value;
     }
 
     public String getItemSerialNumber(){
@@ -126,14 +141,14 @@ public class InventoryManagementApplication extends javafx.application.Applicati
 
     @Override
     public void start(Stage stage) throws Exception {
-        Inventory startupList = new Inventory();
+        Inventory startupInv = new Inventory();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scene.fxml"));
         Parent root = loader.load();
         FXMLController controller = loader.getController();
 
         Scene scene = new Scene(root);
-        controller.setData(startupList, scene);
+        controller.setData(startupInv, scene);
 
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
 

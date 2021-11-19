@@ -57,7 +57,7 @@ class AppTest {
         testInv.addEntry(new InventoryItem("A-XB1-24A-XY3", "Xbox Series X", "1499.00"));
         testInv.addEntry(new InventoryItem("A-QB3-24Z-333", "A literal horse", "3000.00"));
 
-        testWriter.writeTSVFile(Paths.get("data/test2.txt"), testInv);
+        testWriter.writeInventoryToFile("data/test2.txt", testInv);
 
         //Compare the produced file to a set of correct values and confirm that they are identical.
         Scanner testScanner = new Scanner(Paths.get("data/test2.txt"));
@@ -81,7 +81,7 @@ class AppTest {
         testInv.addEntry(new InventoryItem("A-XB1-24A-XY3", "Xbox Series X", "1499.00"));
         testInv.addEntry(new InventoryItem("A-QB3-24Z-333", "A literal horse", "3000.00"));
 
-        testWriter.writeHTMLFile(Paths.get("data/test2.html"), testInv);
+        testWriter.writeInventoryToFile("data/test2.html", testInv);
 
         //Compare the produced file to a correct file and confirm that they are identical.
         Scanner testScanner = new Scanner(Paths.get("data/test.html"));
@@ -104,7 +104,7 @@ class AppTest {
         testInv.addEntry(new InventoryItem("A-XB1-24A-XY3", "Xbox Series X", "1499.00"));
         testInv.addEntry(new InventoryItem("A-QB3-24Z-333", "A literal horse", "3000.00"));
 
-        testWriter.writeJSONFile(Paths.get("data/test2.json"), testInv);
+        testWriter.writeInventoryToFile("data/test2.json", testInv);
 
         //Compare the produced file to a correct file and confirm that they are identical.
         Scanner testScanner = new Scanner(Paths.get("data/test.json"));

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,7 +44,7 @@ public class MyFileWriter {
         return false;
     }
 
-    public void writeHTMLFile(Path targetFile, Inventory saveData) throws FileNotFoundException {
+    private void writeHTMLFile(Path targetFile, Inventory saveData) throws FileNotFoundException {
         StringBuilder outputHTML = new StringBuilder();
 
         outputHTML.append("""
@@ -123,7 +122,7 @@ public class MyFileWriter {
         //Write outputHTML to targetFile
     }
 
-    public void writeJSONFile(Path targetFile, Inventory saveData) throws FileNotFoundException {
+    private void writeJSONFile(Path targetFile, Inventory saveData) throws FileNotFoundException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonElement je = JsonParser.parseString(gson.toJson(saveData));
         String prettyJsonString = gson.toJson(je);
@@ -138,7 +137,7 @@ public class MyFileWriter {
         //Print the Gson.toJson(saveData) to the targetFile
     }
 
-    public void writeTSVFile(Path targetFile, Inventory saveData) throws IOException {
+    private void writeTSVFile(Path targetFile, Inventory saveData) throws IOException {
         //Open a formatter for the file
         try(Formatter output = new Formatter(targetFile.toString())){
             //For each item in the inventory, write a single line to the file
