@@ -11,6 +11,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -35,6 +38,11 @@ public class FXMLController implements Initializable {
     @FXML private Button searchNameButton = new Button();
     @FXML private Button clearSearchButton = new Button();
     @FXML private Button testButton = new Button();
+    @FXML private Button sortSerialButton = new Button();
+    @FXML private Button sortNameButton = new Button();
+    @FXML private Button sortValueButton = new Button();
+
+
 
     Inventory workingInv;
     List<HBox> boxList = new ArrayList<>();
@@ -66,30 +74,30 @@ public class FXMLController implements Initializable {
         TextField itemSNField = new TextField();
         itemSNField.setPrefHeight(26.0);
         itemSNField.setPrefWidth(120.0);
-        itemSNField.setId("serial number field " + boxList.size()/2);
-        itemSNField.setText(workingInv.getEntry((boxList.size()/2)).getItemSerialNumber());
+        itemSNField.setId("serial number field " + (boxList.size()));
+        itemSNField.setText(workingInv.getEntry((boxList.size() - 1)).getItemSerialNumber());
 
         TextField itemNameField = new TextField();
         itemNameField.setPrefHeight(26.0);
         itemNameField.setPrefWidth(120.0);
-        itemNameField.setId("name field " + boxList.size()/2);
-        itemNameField.setText(workingInv.getEntry((boxList.size()/2)).getItemName());
+        itemNameField.setId("name field " + (boxList.size()));
+        itemNameField.setText(workingInv.getEntry((boxList.size() - 1)).getItemName());
 
         TextField itemValueField = new TextField();
         itemValueField.setPrefHeight(26.0);
         itemValueField.setPrefWidth(120.0);
-        itemValueField.setId("name field " + boxList.size()/2);
-        itemValueField.setText(workingInv.getEntry((boxList.size()/2)).getItemValue());
+        itemValueField.setId("name field " + (boxList.size()));
+        itemValueField.setText(workingInv.getEntry((boxList.size() - 1)).getItemValue());
 
-        Button itemSaveButton = new Button("Update Item #" + (boxList.size()/2+1));
+        Button itemSaveButton = new Button("Update Item #" + (boxList.size()));
         itemSaveButton.setPrefWidth(110.00);
-        itemSaveButton.setUserData(boxList.size() / 2);
+        itemSaveButton.setUserData(boxList.size() - 1);
         itemSaveButton.setOnAction(e ->
                 saveItem((int) itemSaveButton.getUserData(), itemSNField, itemNameField, itemValueField));
 
         Button itemDeleteButton = new Button("Delete Item");
         itemDeleteButton.setPrefWidth(90.00);
-        itemDeleteButton.setUserData(boxList.size() / 2);
+        itemDeleteButton.setUserData(boxList.size());
         itemDeleteButton.setOnAction(e ->
                 deleteItem((int) itemDeleteButton.getUserData()));
 
@@ -109,6 +117,30 @@ public class FXMLController implements Initializable {
         for(int i=0;i<workingInv.getLength();i++){
             makeNewItemBox();
         }
+    }
+
+    @FXML
+    private void sortBySerial(){
+        workingInv.sortBySN();
+        boxList.clear();
+        itemsListBox.getChildren().clear();
+        populateItemBoxes();
+    }
+
+    @FXML
+    private void sortByName(){
+        workingInv.sortByName();
+        boxList.clear();
+        itemsListBox.getChildren().clear();
+        populateItemBoxes();
+    }
+
+    @FXML
+    private void sortByValue(){
+        workingInv.sortByValue();
+        boxList.clear();
+        itemsListBox.getChildren().clear();
+        populateItemBoxes();
     }
 
     @FXML
@@ -227,16 +259,52 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    private void testButton() throws IOException {
-        alertPopup.show();
+    private void searchSerialNumber(){
+
+        for(int i=0;i< workingInv.getLength();i++){
+            boxList.get(i).setVisible(true);
+            boxList.get(i).setManaged(true);
+
+            if(!workingInv.getEntry(i).getItemSerialNumber().contains(searchTermField.getText())){
+                boxList.get(i).setVisible(false);
+                boxList.get(i).setManaged(false);
+            }
+        }
+    }
+
+    @FXML
+    private void searchName(){
+
+        for(int i=0;i< workingInv.getLength();i++){
+            boxList.get(i).setVisible(true);
+            boxList.get(i).setManaged(true);
+
+            if(!workingInv.getEntry(i).getItemName().contains(searchTermField.getText())){
+                boxList.get(i).setVisible(false);
+                boxList.get(i).setManaged(false);
+            }
+        }
+    }
+
+    @FXML
+    private void clearSearch(){
+
+        for(int i=0;i< workingInv.getLength();i++){
+            boxList.get(i).setVisible(true);
+            boxList.get(i).setManaged(true);
+        }
+    }
+
+    @FXML
+    private void testButton() {
+        for(int i=0;i< workingInv.getLength();i++){
+            System.out.printf("%s, %s, %s%n", workingInv.getEntry(i).getItemSerialNumber(), workingInv.getEntry(i).getItemName(), workingInv.getEntry(i).getItemValue());
+        }
+        System.out.printf("%n%n");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        sortByChoiceBox.getItems().add("Value");
-        sortByChoiceBox.getItems().add("Serial number");
-        sortByChoiceBox.getItems().add("Name");
-        sortByChoiceBox.setValue("Value");
 
         alertPopup.setContentText("Invalid parameters for new item. Make sure SN is unique and in the format " +
                 "A-XXX-XXX-XXX, where A is a letter and X can be a letter or a digit; name is between 2 and 256" +

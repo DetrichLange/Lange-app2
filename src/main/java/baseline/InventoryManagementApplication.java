@@ -30,6 +30,24 @@ class Inventory {
         items.add(newEntry);
     }
 
+    public void sortBySN(){
+        items.sort(Comparator.comparing(InventoryItem::getItemSerialNumber));
+    }
+
+    public void sortByName(){
+        items.sort(Comparator.comparing(InventoryItem::getItemName));
+    }
+
+    public void sortByValue(){
+        for(int q=0;q<(items.size()-1);q++) {
+            for (int i = 0; i < (items.size() - 1); i++) {
+                if (Double.parseDouble(items.get(i).getItemValue()) < Double.parseDouble(items.get(i + 1).getItemValue())) {
+                    Collections.swap(items, i, i + 1);
+                }
+            }
+        }
+    }
+
     public InventoryItem getEntry(int index){
         //Returns the item at the specified index
         return items.get(index);
@@ -57,6 +75,10 @@ class Inventory {
             //Return false
         double valueDouble;
 
+        if(!value.matches("\\d+\\.\\d\\d")){
+            return false;
+        }
+
         try {
             valueDouble = Double.parseDouble(value);
         }catch(NumberFormatException nfe){
@@ -82,11 +104,18 @@ class Inventory {
                 //Return true
         //Return false
 
+        if(!serialNumber.matches(
+                "[A-Za-z]-[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]-[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]" +
+                        "-[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]")){
+            return false;
+        }
+
         for(InventoryItem item : items){
             if(item.getItemSerialNumber().equals(serialNumber)){
                 return false;
             }
         }
+
         return true;
     }
 }
