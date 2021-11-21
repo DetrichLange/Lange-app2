@@ -12,6 +12,8 @@ import java.util.Scanner;
 
 public class MyFileReader {
 
+    static final String ENDTAG = "</td>";
+
     MyFileReader(){
 
     }
@@ -101,13 +103,13 @@ public class MyFileReader {
                         }
 
                         currentLine = fileInput.nextLine();
-                        nextSerial = currentLine.replace("<td>", "").replace("</td>", "")
+                        nextSerial = currentLine.replace("<td>", "").replace(ENDTAG, "")
                                 .replaceAll("^\s*", "");
                         currentLine = fileInput.nextLine();
-                        nextName = currentLine.replace("<td>", "").replace("</td>", "")
+                        nextName = currentLine.replace("<td>", "").replace(ENDTAG, "")
                                 .replaceAll("^\s*", "");
                         currentLine = fileInput.nextLine();
-                        nextValue = currentLine.replace("<td>", "").replace("</td>", "")
+                        nextValue = currentLine.replace("<td>", "").replace(ENDTAG, "")
                                 .replaceAll("^\s*", "");
 
                         importInv.addEntry(new InventoryItem(nextSerial, nextName, nextValue));
@@ -136,7 +138,7 @@ public class MyFileReader {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         //Make a BufferedReader
         BufferedReader bufferedReader = new BufferedReader(
-                new java.io.FileReader("data/test.json"));
+                new java.io.FileReader(importFile.toString()));
 
         //Make an Inventory from Gson.fromJson(BufferedReader, Inventory.class)
         Inventory importInv = gson.fromJson(bufferedReader, Inventory.class);

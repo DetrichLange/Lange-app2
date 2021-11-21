@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,31 +16,27 @@ public class MyFileWriter {
 
     }
 
-    public boolean writeInventoryToFile(String filePath, Inventory saveData) throws IOException {
+    public void writeInventoryToFile(String filePath, Inventory saveData) throws IOException {
         //Taking a file path string and an Inventory object as arguments, this method opens a formatter for the file
         //at the specified path.
 
         Path importPath = Paths.get(filePath);
 
-        try(Formatter output = new Formatter(filePath)) {
+        try(Formatter ignored = new Formatter(filePath)) {
             //If the path ends in .html, call writeHTMLFile and return its result
             if(filePath.endsWith(".html")){
                 writeHTMLFile(importPath, saveData);
-                return true;
             }
             //Else if the path ends in .json, call writeJSONFile and return its result
             else if(filePath.endsWith(".json")){
                 writeJSONFile(importPath, saveData);
-                return true;
             }
             //Else if the path ends in .txt, call writeTSVFile and return its result
             else if(filePath.endsWith(".txt")){
                 writeTSVFile(importPath, saveData);
-                return true;
             }
         }
         //If the path doesn't end in any of those extensions, or the file can't be found, return false
-        return false;
     }
 
     private void writeHTMLFile(Path targetFile, Inventory saveData) throws FileNotFoundException {

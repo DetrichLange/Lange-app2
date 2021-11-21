@@ -6,20 +6,10 @@
 
 package baseline;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.*;
 
 class Inventory {
@@ -39,6 +29,7 @@ class Inventory {
     }
 
     public void sortByValue(){
+        //Bubble sort
         for(int q=0;q<(items.size()-1);q++) {
             for (int i = 0; i < (items.size() - 1); i++) {
                 if (Double.parseDouble(items.get(i).getItemValue()) < Double.parseDouble(items.get(i + 1).getItemValue())) {
@@ -46,6 +37,14 @@ class Inventory {
                 }
             }
         }
+    }
+
+    public boolean searchSN(int whichItem, String searchTerm){
+        return items.get(whichItem).getItemSerialNumber().contains(searchTerm);
+    }
+
+    public boolean searchName(int whichItem, String searchTerm){
+        return items.get(whichItem).getItemName().contains(searchTerm);
     }
 
     public InventoryItem getEntry(int index){
@@ -68,8 +67,27 @@ class Inventory {
         items.clear();
     }
 
+    public boolean makeNewItemHelper(String newName, String newSerial, String newValue){
+        if(checkItemName(newName) && checkItemSerial(newSerial)
+                && checkItemValue(newValue)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean editItemHelper(int whichItem, String newName, String newSerial, String newValue){
+        if(!getEntry(whichItem).getItemSerialNumber().equals(newSerial) && !checkItemSerial(newSerial)){
+            return false;
+        }
+
+        return checkItemName(newName) && checkItemValue(newValue);
+    }
+
     public boolean checkItemValue(String value){
-        //If the value double is >= 0:
+        //If the value string doesn't match a money format (any number of digits, then a period, then two digits):
+            //Return false
+        //Then if the value can be converted to a double successfully and is > 0:
             //Return true
         //Else:
             //Return false
@@ -98,11 +116,11 @@ class Inventory {
     }
 
     public boolean checkItemSerial(String serialNumber){
-        //If the serialNumber string fits the format A-XXX-XXX-XXX:
-            //If the serialNumber string is not identical to the serialNumber attribute of any InventoryItem in
-            // the list:
+        //If the serialNumber string doesn't fit the format A-XXX-XXX-XXX:
+            //Return false
+        //Then if the serialNumber string is not identical to the serialNumber attribute of any InventoryItem in the list:
                 //Return true
-        //Return false
+        //Else, Return false
 
         if(!serialNumber.matches(
                 "[A-Za-z]-[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]-[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]" +

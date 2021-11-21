@@ -11,9 +11,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -26,23 +23,11 @@ import javafx.stage.Stage;
 public class FXMLController implements Initializable {
 
     @FXML private Button importButton = new Button();
-    @FXML private Button exportButton = new Button();
-    @FXML private Button newItemButton = new Button();
     @FXML private VBox itemsListBox = new VBox();
-    @FXML private ChoiceBox<String> sortByChoiceBox = new ChoiceBox<>();
     @FXML private TextField searchTermField = new TextField();
     @FXML private TextField newSNField = new TextField();
     @FXML private TextField newNameField = new TextField();
     @FXML private TextField newValueField = new TextField();
-    @FXML private Button searchSerialNumberButton = new Button();
-    @FXML private Button searchNameButton = new Button();
-    @FXML private Button clearSearchButton = new Button();
-    @FXML private Button testButton = new Button();
-    @FXML private Button sortSerialButton = new Button();
-    @FXML private Button sortNameButton = new Button();
-    @FXML private Button sortValueButton = new Button();
-
-
 
     Inventory workingInv;
     List<HBox> boxList = new ArrayList<>();
@@ -121,15 +106,19 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void sortBySerial(){
+        //Call sortBySN to sort the list
         workingInv.sortBySN();
+        //Clear and re-populate the GUI to update the displayed list
         boxList.clear();
         itemsListBox.getChildren().clear();
         populateItemBoxes();
     }
 
     @FXML
-    private void sortByName(){
+    private void sortByName() {
+        //Call sortByName to sort the list
         workingInv.sortByName();
+        //Clear and re-populate the GUI to update the displayed list
         boxList.clear();
         itemsListBox.getChildren().clear();
         populateItemBoxes();
@@ -137,7 +126,9 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void sortByValue(){
+        //Call sortByValue to sort the list
         workingInv.sortByValue();
+        //Clear and re-populate the GUI to update the displayed list
         boxList.clear();
         itemsListBox.getChildren().clear();
         populateItemBoxes();
@@ -197,8 +188,7 @@ public class FXMLController implements Initializable {
             //Make a new item box to display that item
         //Else, create error message.
 
-        if(workingInv.checkItemName(newNameField.getText()) && workingInv.checkItemSerial(newSNField.getText())
-                && workingInv.checkItemValue(newValueField.getText())){
+        if(workingInv.makeNewItemHelper(newNameField.getText(), newSNField.getText(), newValueField.getText())){
             workingInv.addEntry(new InventoryItem(newSNField.getText(), newNameField.getText(), newValueField.getText()));
             makeNewItemBox();
             newSNField.clear();
@@ -228,10 +218,7 @@ public class FXMLController implements Initializable {
         // passes .checkItemSerial:
             //Update the attributes of the item at the specified index
 
-        if(workingInv.checkItemName(itemNameField.getText())
-                && workingInv.checkItemValue(itemValueField.getText())
-                && (  workingInv.checkItemSerial(itemSNField.getText())
-                || workingInv.getEntry(whichItem).getItemSerialNumber().equals(itemSNField.getText())  )){
+        if(workingInv.editItemHelper(whichItem, itemNameField.getText(), itemSNField.getText(), itemValueField.getText())){
             workingInv.getEntry(whichItem).setItemSerialNumber(itemSNField.getText());
             workingInv.getEntry(whichItem).setItemName(itemNameField.getText());
             workingInv.getEntry(whichItem).setItemValue(itemValueField.getText());
@@ -261,11 +248,13 @@ public class FXMLController implements Initializable {
     @FXML
     private void searchSerialNumber(){
 
+        //Reset the last search by making everything visible
         for(int i=0;i< workingInv.getLength();i++){
             boxList.get(i).setVisible(true);
             boxList.get(i).setManaged(true);
 
-            if(!workingInv.getEntry(i).getItemSerialNumber().contains(searchTermField.getText())){
+            //Check if each item matches the search term, and hide it if it doesn't
+            if(!workingInv.searchSN(i, searchTermField.getText())){
                 boxList.get(i).setVisible(false);
                 boxList.get(i).setManaged(false);
             }
@@ -279,7 +268,7 @@ public class FXMLController implements Initializable {
             boxList.get(i).setVisible(true);
             boxList.get(i).setManaged(true);
 
-            if(!workingInv.getEntry(i).getItemName().contains(searchTermField.getText())){
+            if(!workingInv.searchName(i, searchTermField.getText())){
                 boxList.get(i).setVisible(false);
                 boxList.get(i).setManaged(false);
             }
@@ -293,14 +282,6 @@ public class FXMLController implements Initializable {
             boxList.get(i).setVisible(true);
             boxList.get(i).setManaged(true);
         }
-    }
-
-    @FXML
-    private void testButton() {
-        for(int i=0;i< workingInv.getLength();i++){
-            System.out.printf("%s, %s, %s%n", workingInv.getEntry(i).getItemSerialNumber(), workingInv.getEntry(i).getItemName(), workingInv.getEntry(i).getItemValue());
-        }
-        System.out.printf("%n%n");
     }
 
     @Override
