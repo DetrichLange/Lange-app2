@@ -3,6 +3,7 @@ package baseline;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Formatter;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,15 +13,32 @@ class AppTest {
     //The user shall be able to store at least 1024 inventory items
     @Test
     void bigInventory_test() throws IOException{
-        //read1024test.txt contains 1024 items, so by reading it into an Inventory, we have tested this requirement
-        MyFileReader testReader = new MyFileReader();
-        Inventory testInv = testReader.readInventoryFromFile("data/read1024test.txt");
+        //First, make a test file with 1024 items
+        Formatter testWriter = new Formatter("data/bigtest.txt");
+        testWriter.format("Serial Number\tName\tValue%n");
+        for(int i=0;i<1000;i++){
+            StringBuilder testSN = new StringBuilder();
+            testSN.append("A-000-000-").append(i).append("0".repeat(13-testSN.length()));
+            testWriter.format("%s\tHorse\t1000.00%n", testSN.toString());
+            System.out.println(i);
+        }
+        for(int i=0;i<25;i++){
+            StringBuilder testSN = new StringBuilder();
+            testSN.append("A-000-999-").append(i).append("0".repeat(13-testSN.length()));
+            testWriter.format("%s\tHorse\t1000.00%n", testSN.toString());
+            System.out.println(i);
+        }
+        testWriter.close();
 
-        Scanner testScanner = new Scanner(Paths.get("data/read1024test.txt"));
+        //bigtest.txt now contains 1024 items, so by reading it into an Inventory, we have tested this requirement
+        MyFileReader testReader = new MyFileReader();
+        Inventory testInv = testReader.readInventoryFromFile("data/bigtest.txt");
+
+        Scanner testScanner = new Scanner(Paths.get("data/bigtest.txt"));
 
         //To make sure we read it right, compare the created Inventory to the source file
         testScanner.nextLine(); //skip the first line because it just lists the attribute names
-        for(int i=0;i<1022;i++){
+        for(int i=0;i<1024;i++){
             assertEquals(testInv.getEntry(i).getItemSerialNumber() + "\tHorse\t1000.00", testScanner.nextLine());
         }
     }
@@ -83,6 +101,7 @@ class AppTest {
     //The application shall display an error message if the user enters an existing serial number for the new item
     //The application shall display an error message if the user enters an invalid item value
     //The application shall display an error message if the user enters an invalid item name
+    @Test
     void duplicateError_test(){
         //The GUI calls makeNewItemHelper, and if it returns false, creates an error alert.
         Inventory testInv = new Inventory();
@@ -351,10 +370,16 @@ class AppTest {
     public void readTSVFile_test() throws IOException {
         //This test attempts to read the TSV file in the data folder and convert it to an Inventory object.
 
+        //First, write a TSV file.
+        Formatter formatter = new Formatter("data/TSVreadtest.txt");
+        formatter.format("Serial Number\tName\tValue%nA-XB1-24A-XY3\tXbox Series X\t1499.00%n" +
+                "A-QB3-24Z-333\tA literal horse\t3000.00");
+        formatter.close();
+
         MyFileReader testReader = new MyFileReader();
         Inventory testInv;
 
-        testInv = testReader.readInventoryFromFile("data/readtest.txt");
+        testInv = testReader.readInventoryFromFile("data/TSVreadtest.txt");
         assertEquals("1499.00", testInv.getEntry(0).getItemValue());
         assertEquals("Xbox Series X", testInv.getEntry(0).getItemName());
         assertEquals("A-XB1-24A-XY3", testInv.getEntry(0).getItemSerialNumber());
