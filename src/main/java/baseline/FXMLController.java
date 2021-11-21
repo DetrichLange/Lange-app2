@@ -83,7 +83,7 @@ public class FXMLController implements Initializable {
 
         Button itemDeleteButton = new Button("Delete Item");
         itemDeleteButton.setPrefWidth(90.00);
-        itemDeleteButton.setUserData(boxList.size());
+        itemDeleteButton.setUserData(boxList.size() - 1);
         itemDeleteButton.setOnAction(e ->
                 deleteItem((int) itemDeleteButton.getUserData()));
 
