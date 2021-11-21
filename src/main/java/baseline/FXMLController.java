@@ -45,6 +45,7 @@ public class FXMLController implements Initializable {
         //Open a filechooser window to select a file
         //Return the chosen file
         Stage stage = (Stage) importButton.getScene().getWindow();
+
         return fileChooser.showOpenDialog(stage);
     }
 
@@ -171,7 +172,10 @@ public class FXMLController implements Initializable {
         //If no list was chosen, don't do anything.
 
         MyFileWriter fileWriter = new MyFileWriter();
-        File exportFile = chooseFile();
+//        File exportFile = chooseFile();
+
+        Stage stage = (Stage) importButton.getScene().getWindow();
+        File exportFile = fileChooser.showSaveDialog(stage);
 
         if(exportFile != null){
             fileWriter.writeInventoryToFile(exportFile.getPath(), workingInv);
@@ -286,6 +290,12 @@ public class FXMLController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        FileChooser.ExtensionFilter extFilter1 = new FileChooser.ExtensionFilter("TSV files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("HTML files (*.html)", "*.html");
+        FileChooser.ExtensionFilter extFilter3 = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter1);
+        fileChooser.getExtensionFilters().add(extFilter2);
+        fileChooser.getExtensionFilters().add(extFilter3);
 
         alertPopup.setContentText("Invalid parameters for new item. Make sure SN is unique and in the format " +
                 "A-XXX-XXX-XXX, where A is a letter and X can be a letter or a digit; name is between 2 and 256" +

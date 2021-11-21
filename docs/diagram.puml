@@ -1,0 +1,84 @@
+@startuml
+
+class InventoryManagementApplication{
++void start(Stage stage) throws Exception
++static void main(String[] args)
+}
+
+class Inventory{
+-List<InventoryItem> items
++void addEntry(InventoryItem newEntry)
++void sortBySN()
++void sortByName()
++void sortByValue()
++boolean searchSN(int whichItem, String searchTerm)
++boolean searchName(int whichItem, String searchTerm)
++InventoryItem getEntry(int index)
++int getLength()
++void deleteEntry(int index)
++void clearList()
++boolean makeNewItemHelper(String newName, String newSerial, String newValue)
++boolean editItemHelper(int whichItem, String newName, String newSerial, String newValue)
++boolean checkItemValue(String value)
++boolean checkItemName(String name)
++boolean checkItemSerial(String serialNumber)
+}
+
+class InventoryItem{
+-String itemSerialNumber;
+-String itemName;
+-String itemValue;
++InventoryItem(String serialNumber, String name, String value)
++void setItemSerialNumber(String serialNumber)
++void setItemName(String name)
++void setItemValue(String value)
++String getItemSerialNumber()
++String getItemName()
++String getItemValue()
+}
+
+class MyFileReader{
++Inventory readInventoryFromFile(String filePath) throws IOException
+-Inventory parseTSVFile(Path importFile)
+-Inventory parseHTMLFile(Path importFile)
+-Inventory parseJSONFile(Path importFile)
+}
+
+class MyFileWriter{
++Inventory writeInventoryToFile(String filePath, Inventory saveData) throws IOException
+-Inventory writeTSVFile(Path targetFile, Inventory saveData)
+-Inventory writeHTMLFile(Path targetFile, Inventory saveData)
+-Inventory writeJSONFile(Path targetFile, Inventory saveData)
+}
+
+class FXMLController{
+Inventory workingInv
+List<HBox> boxList
+FileChooser fileChooser
+Scene workingScene
+Alert alertPopup
++void setData(Inventory startupInv, Scene scene)
+-File chooseFile()
+-void makeNewItemBox()
+-void populateItemBoxes()
+-void sortBySerial()
+-void sortByName()
+-void sortByValue()
+-void importList()
+-void exportList()
+-void makeNewItem()
+-void clearListAndBoxes()
+-void saveItem(int whichItem, TextField itemSNField, TextField itemNameField, TextField itemValueField)
+-void deleteItem(int whichItem)
+-void searchSerialNumber()
+-void searchName()
+-void clearSearch()
+-void initialize(URL url, ResourceBundle rb)
+}
+
+Inventory -* InventoryItem : contains list of
+MyFileReader -* Inventory : creates
+MyFileWriter *- Inventory : exports
+InventoryManagementApplication -* FXMLController : creates scene
+
+@enduml

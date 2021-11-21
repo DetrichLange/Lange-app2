@@ -68,12 +68,8 @@ class Inventory {
     }
 
     public boolean makeNewItemHelper(String newName, String newSerial, String newValue){
-        if(checkItemName(newName) && checkItemSerial(newSerial)
-                && checkItemValue(newValue)){
-            return true;
-        }else{
-            return false;
-        }
+        return checkItemName(newName) && checkItemSerial(newSerial)
+                && checkItemValue(newValue);
     }
 
     public boolean editItemHelper(int whichItem, String newName, String newSerial, String newValue){
@@ -140,7 +136,7 @@ class Inventory {
 
 class InventoryItem {
 
-    //Each ToDoListEntry
+    //Each InventoryItem has these three things
     private String itemSerialNumber;
     private String itemName;
     private String itemValue;
