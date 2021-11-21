@@ -12,11 +12,11 @@ class AppTest {
     //The user shall be able to store at least 1024 inventory items
     @Test
     void bigInventory_test() throws IOException{
-        //biglist.txt contains 1024 items, so by reading it into an Inventory, we have tested this requirement
+        //read1024test.txt contains 1024 items, so by reading it into an Inventory, we have tested this requirement
         MyFileReader testReader = new MyFileReader();
-        Inventory testInv = testReader.readInventoryFromFile("data/biglist.txt");
+        Inventory testInv = testReader.readInventoryFromFile("data/read1024test.txt");
 
-        Scanner testScanner = new Scanner(Paths.get("data/biglist.txt"));
+        Scanner testScanner = new Scanner(Paths.get("data/read1024test.txt"));
 
         //To make sure we read it right, compare the created Inventory to the source file
         testScanner.nextLine(); //skip the first line because it just lists the attribute names
@@ -354,7 +354,7 @@ class AppTest {
         MyFileReader testReader = new MyFileReader();
         Inventory testInv;
 
-        testInv = testReader.readInventoryFromFile("data/test.txt");
+        testInv = testReader.readInventoryFromFile("data/readtest.txt");
         assertEquals("1499.00", testInv.getEntry(0).getItemValue());
         assertEquals("Xbox Series X", testInv.getEntry(0).getItemName());
         assertEquals("A-XB1-24A-XY3", testInv.getEntry(0).getItemSerialNumber());
