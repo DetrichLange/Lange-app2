@@ -282,6 +282,7 @@ class AppTest {
         //Compare the produced file to a set of correct values and confirm that they are identical.
         Scanner testScanner = new Scanner(Paths.get("data/test2.txt"));
         testScanner.useDelimiter("\\t|\r\n");
+        testScanner.nextLine();
         assertEquals("A-XB1-24A-XY3", testScanner.next());
         assertEquals("Xbox Series X", testScanner.next());
         assertEquals("1499.00", testScanner.next());

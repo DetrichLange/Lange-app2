@@ -135,6 +135,8 @@ public class MyFileWriter {
     private void writeTSVFile(Path targetFile, Inventory saveData) throws IOException {
         //Open a formatter for the file
         try(Formatter output = new Formatter(targetFile.toString())){
+            //Write the header line
+            output.format("Serial Number\tName\tValue%n");
             //For each item in the inventory, write a single line to the file
             for(int i=0;i<saveData.getLength();i++){
                 //Separate each attribute with a tab
